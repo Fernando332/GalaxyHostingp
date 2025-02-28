@@ -1,0 +1,2516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GalaxyHost - Tu proveedor de hosting para Discord, Minecraft y páginas web">
+    <meta name="keywords" content="hosting, discord, minecraft, web hosting, servidores">
+    <title>GalaxyHost - Tu Universo de Hosting</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <link rel="icon" type="image/png" href="https://via.placeholder.com/32x32">
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #00cec9;
+            --accent-color: #fdcb6e;
+            --background-color: #0c0c1d;
+            --text-color: #ffffff;
+            --card-background: #1e1e3f;
+            --success-color: #00b894;
+            --error-color: #d63031;
+            --warning-color: #fdcb6e;
+            --info-color: #0984e3;
+        }
+
+        .light-mode {
+            --primary-color: #5a47e5;
+            --secondary-color: #00b5b1;
+            --accent-color: #f0b846;
+            --background-color: #f5f7fa;
+            --text-color: #2d3436;
+            --card-background: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Loader */
+        .loader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--background-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--card-background);
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Header y Navegación */
+        header {
+            background-color: rgba(12, 12, 29, 0.8);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            padding: 0.5rem 0;
+            background-color: rgba(12, 12, 29, 0.95);
+        }
+
+        .light-mode header {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .light-mode header.scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links li {
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: bold;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-buttons button {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-buttons button:hover {
+            color: var(--primary-color);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            background-image: url('https://images.unsplash.com/photo-1539721972319-f9e2d65aa84c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(12, 12, 29, 0.7);
+        }
+
+        .light-mode .hero::before {
+            background: rgba(12, 12, 29, 0.5);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 0 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary-color);
+        }
+
+        .cta-button:hover {
+            background-color: transparent;
+            color: var(--text-color);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button.secondary {
+            background-color: transparent;
+            border: 2px solid var(--text-color);
+        }
+
+        .cta-button.secondary:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        /* Características Section */
+        #caracteristicas {
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .section-title {
+            position: relative;
+            display: inline-block;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background-color: var(--card-background);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-card p {
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+
+        /* Servicios Section */
+        #servicios {
+            padding: 5rem 2rem;
+            background-color: rgba(30, 30, 63, 0.3);
+        }
+
+        .light-mode #servicios {
+            background-color: rgba(240, 240, 250, 0.5);
+        }
+
+        #servicios h2 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .servicios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .servicio-card {
+            background-color: var(--card-background);
+            border-radius: 10px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .servicio-card::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 100px;
+            height: 100px;
+            background-color: var(--primary-color);
+            opacity: 0.1;
+            border-radius: 50%;
+            z-index: -1;
+            transition: transform 0.5s ease;
+        }
+
+        .servicio-card:hover::before {
+            transform: scale(3);
+        }
+
+        .servicio-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .servicio-card i {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .servicio-card:hover i {
+            transform: scale(1.1);
+        }
+
+        .servicio-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .servicio-card p {
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #5849c2;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Estadísticas Section */
+        #estadisticas {
+            padding: 5rem 2rem;
+            text-align: center;
+            background: linear-gradient(rgba(12, 12, 29, 0.9), rgba(12, 12, 29, 0.9)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        .light-mode #estadisticas {
+            background: linear-gradient(rgba(245, 247, 250, 0.9), rgba(245, 247, 250, 0.9)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-text {
+            font-size: 1.2rem;
+        }
+
+        /* Precios Section */
+        #precios {
+            padding: 5rem 2rem;
+            background-color: #0f0f24;
+        }
+
+        .light-mode #precios {
+            background-color: #f0f2f5;
+        }
+
+        #precios h2 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .precios-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+            gap: 1rem;
+        }
+
+        .precio-tab {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--card-background);
+            border: none;
+            border-radius: 5px;
+            color: var(--text-color);
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .precio-tab.active {
+            background-color: var(--primary-color);
+        }
+
+        .precio-tab:hover {
+            background-color: var(--primary-color);
+        }
+
+        .precios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .plan-card {
+            background-color: var(--card-background);
+            border-radius: 10px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plan-card.popular::before {
+            content: 'Popular';
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--accent-color);
+            color: #000;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transform: rotate(45deg) translateX(20px) translateY(-10px);
+            width: 150px;
+            text-align: center;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .plan-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .plan-card .precio {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+        }
+
+        .plan-card .precio span {
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+
+        .plan-card ul {
+            list-style-type: none;
+            margin-bottom: 2rem;
+            text-align: left;
+            padding: 0 1rem;
+        }
+
+        .plan-card ul li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .plan-card ul li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--success-color);
+        }
+
+        .plan-card .btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+        }
+
+        /* Testimonios Section */
+        #testimonios {
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .testimonios-container {
+            max-width: 1000px;
+            margin: 3rem auto 0;
+        }
+
+        .swiper {
+            width: 100%;
+            padding-bottom: 50px;
+        }
+
+        .testimonio-card {
+            background-color: var(--card-background);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: left;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            height: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .testimonio-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding: 0 1rem;
+        }
+
+        .testimonio-text::before {
+            content: '\f10d';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            opacity: 0.3;
+        }
+
+        .testimonio-autor {
+            display: flex;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .testimonio-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            object-fit: cover;
+        }
+
+        .testimonio-info h4 {
+            margin-bottom: 0.2rem;
+        }
+
+        .testimonio-info p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .swiper-pagination-bullet {
+            background-color: var(--primary-color);
+        }
+
+        /* FAQ Section */
+        #faq {
+            padding: 5rem 2rem;
+            background-color: rgba(30, 30, 63, 0.3);
+        }
+
+        .light-mode #faq {
+            background-color: rgba(240, 240, 250, 0.5);
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 3rem auto 0;
+        }
+
+        .faq-item {
+            background-color: var(--card-background);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background-color: rgba(108, 92, 231, 0.1);
+        }
+
+        .faq-question i {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question.active i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-answer.active {
+            padding: 0 1.5rem 1.5rem;
+            max-height: 500px;
+        }
+
+        /* Contacto Section */
+        #contacto {
+            padding: 5rem 2rem;
+        }
+
+        #contacto h2 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .contacto-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .contacto-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contacto-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .contacto-item i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-top: 0.2rem;
+        }
+
+        .contacto-item-content h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        #contacto-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        #contacto-form input,
+        #contacto-form textarea {
+            padding: 1rem;
+            border-radius: 5px;
+            border: none;
+            background-color: var(--card-background);
+            color: var(--text-color);
+            transition: box-shadow 0.3s ease;
+        }
+
+        #contacto-form input:focus,
+        #contacto-form textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+
+        #contacto-form textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        #contacto-form button {
+            align-self: flex-start;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #0a0a1d;
+            padding: 5rem 2rem 1rem;
+        }
+
+        .light-mode footer {
+            background-color: #e0e5ec;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .footer-section p {
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .footer-section ul {
+            list-style-type: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icons a {
+            color: var(--text-color);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .social-icons a:hover {
+            color: var(--primary-color);
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .newsletter-form {
+            display: flex;
+            margin-top: 1.5rem;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+        }
+
+        .newsletter-form input:focus {
+            outline: none;
+        }
+
+        .newsletter-form button {
+            padding: 0.8rem 1.2rem;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .newsletter-form button:hover {
+            background-color: #5849c2;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #1a1a3f;
+        }
+
+        .light-mode .footer-bottom {
+            border-top: 1px solid #ccc;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--card-background);
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            transform: translateY(-50px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .cerrar {
+            color: var(--text-color);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            line-height: 1;
+        }
+
+        .cerrar:hover,
+        .cerrar:focus {
+            color: var(--primary-color);
+        }
+
+        /* Carrito Modal */
+        #carrito-items {
+            margin: 1.5rem 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .carrito-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .carrito-item:last-child {
+            border-bottom: none;
+        }
+
+        .carrito-item-info {
+            flex: 1;
+        }
+
+        .carrito-item-nombre {
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .carrito-item-precio {
+            color: var(--primary-color);
+        }
+
+        .eliminar-item {
+            background: none;
+            border: none;
+            color: var(--error-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .eliminar-item:hover {
+            color: #ff0000;
+        }
+
+        #carrito-total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 1.5rem 0;
+            text-align: right;
+        }
+
+        /* Usuario Modal */
+        #login-form, #registro-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        #login-form input, #registro-form input {
+            padding: 1rem;
+            border-radius: 5px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+        }
+
+        #login-form input:focus, #registro-form input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+
+        .auth-options {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .auth-link {
+            color: var(--primary-color);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        #usuario-info {
+            margin: 1.5rem 0;
+        }
+
+        #usuario-info h3 {
+            margin-bottom: 1rem;
+        }
+
+        #usuario-servicios {
+            margin: 1.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        #usuario-servicios li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+        }
+
+        .chat-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-button i {
+            font-size: 1.5rem;
+        }
+
+        .chat-container {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            background-color: var(--card-background);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: none;
+            transition: all 0.3s ease;
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        .chat-container.active {
+            display: block;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .chat-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+        }
+
+        .chat-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            max-width: 80%;
+        }
+
+        .message-content {
+            padding: 0.8rem;
+            border-radius: 10px;
+        }
+
+        .message.received {
+            align-self: flex-start;
+        }
+
+        .message.received .message-content {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .message.sent {
+            margin-left: auto;
+        }
+
+        .message.sent .message-content {
+            background-color: var(--primary-color);
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+        }
+
+        .chat-input input:focus {
+            outline: none;
+        }
+
+        .chat-input button {
+            padding: 0.8rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.3s ease forwards;
+            max-width: 350px;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .toast.success {
+            background-color: var(--success-color);
+        }
+
+        .toast.error {
+            background-color: var(--error-color);
+        }
+
+        .toast.warning {
+            background-color: var(--warning-color);
+            color: #000;
+        }
+
+        .toast.info {
+            background-color: var(--info-color);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-left: 1rem;
+        }
+
+        /* Scroll to Top Button */
+        .scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 998;
+        }
+
+        .scroll-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .nav-buttons {
+                display: none;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+            
+            .mobile-menu {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 80%;
+                height: 100%;
+                background-color: var(--background-color);
+                z-index: 1000;
+                padding: 2rem;
+                transition: left 0.3s ease;
+                overflow-y: auto;
+            }
+            
+            .mobile-menu.active {
+                left: 0;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            }
+            
+            .mobile-menu-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 2rem;
+            }
+            
+            .mobile-menu-close {
+                background: none;
+                border: none;
+                color: var(--text-color);
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+            
+            .mobile-nav-links {
+                list-style: none;
+                margin-bottom: 2rem;
+            }
+            
+            .mobile-nav-links li {
+                margin-bottom: 1.5rem;
+            }
+            
+            .mobile-nav-links a {
+                color: var(--text-color);
+                text-decoration: none;
+                font-size: 1.2rem;
+                font-weight: bold;
+                display: block;
+                transition: color 0.3s ease;
+            }
+            
+            .mobile-nav-links a:hover {
+                color: var(--primary-color);
+            }
+            
+            .mobile-nav-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .mobile-nav-buttons button {
+                width: 100%;
+                padding: 1rem;
+                background: none;
+                border: 2px solid var(--primary-color);
+                border-radius: 5px;
+                color: var(--text-color);
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+            
+            .mobile-nav-buttons button:hover {
+                background-color: var(--primary-color);
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .contacto-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .chat-container {
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 20% auto;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader-container">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <nav>
+            <a href="#inicio" class="logo">
+                <i class="fas fa-rocket"></i>
+                <h1>GalaxyHost</h1>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#precios">Precios</a></li>
+                <li><a href="#testimonios">Testimonios</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button id="carrito-btn">
+                    <i class="fas fa-shopping-cart"></i> Carrito <span id="carrito-count">0</span>
+                </button>
+                <button id="usuario-btn">
+                    <i class="fas fa-user"></i> Mi Cuenta
+                </button>
+            </div>
+            <button class="hamburger" id="hamburger-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-menu-header">
+            <a href="#inicio" class="logo">
+                <i class="fas fa-rocket"></i>
+                <h1>GalaxyHost</h1>
+            </a>
+            <button class="mobile-menu-close" id="mobile-menu-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="mobile-nav-links">
+            <li><a href="#inicio" class="mobile-nav-link">Inicio</a></li>
+            <li><a href="#servicios" class="mobile-nav-link">Servicios</a></li>
+            <li><a href="#precios" class="mobile-nav-link">Precios</a></li>
+            <li><a href="#testimonios" class="mobile-nav-link">Testimonios</a></li>
+            <li><a href="#faq" class="mobile-nav-link">FAQ</a></li>
+            <li><a href="#contacto" class="mobile-nav-link">Contacto</a></li>
+        </ul>
+        <div class="mobile-nav-buttons">
+            <button id="mobile-theme-toggle">
+                <i class="fas fa-moon"></i> Cambiar Tema
+            </button>
+            <button id="mobile-carrito-btn">
+                <i class="fas fa-shopping-cart"></i> Carrito <span id="mobile-carrito-count">0</span>
+            </button>
+            <button id="mobile-usuario-btn">
+                <i class="fas fa-user"></i> Mi Cuenta
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="inicio" class="hero">
+            <div class="hero-content">
+                <h1>Bienvenido a GalaxyHost</h1>
+                <p>Tu universo de hosting para Discord, Minecraft y páginas web</p>
+                <div class="cta-buttons">
+                    <a href="#servicios" class="cta-button">Explora Nuestros Servicios</a>
+                    <a href="#precios" class="cta-button secondary">Ver Planes</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Características Section -->
+        <section id="caracteristicas">
+            <h2 class="section-title">¿Por qué elegirnos?</h2>
+            <p class="section-subtitle">Descubre lo que nos hace diferentes</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-server"></i>
+                    <h3>Servidores de Alto Rendimiento</h3>
+                    <p>Utilizamos hardware de última generación para garantizar velocidad y estabilidad.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Seguridad Avanzada</h3>
+                    <p>Protección contra DDoS y copias de seguridad diarias para mantener tus datos seguros.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-headset"></i>
+                    <h3>Soporte 24/7</h3>
+                    <p>Nuestro equipo de expertos está disponible en cualquier momento para ayudarte.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <h3>99.9% de Tiempo Activo</h3>
+                    <p>Garantizamos que tus servicios estarán siempre disponibles cuando los necesites.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Servicios Section -->
+        <section id="servicios">
+            <h2 class="section-title">Nuestros Servicios Estelares</h2>
+            <p class="section-subtitle">Soluciones diseñadas para tus necesidades</p>
+            <div class="servicios-grid">
+                <div class="servicio-card">
+                    <i class="fab fa-discord"></i>
+                    <h3>Hosting para Bots de Discord</h3>
+                    <p>Mantén tu bot en línea 24/7 con nuestro hosting optimizado para Discord. Soporte para múltiples lenguajes de programación y escalabilidad automática.</p>
+                    <a href="#precios" class="btn">Ver Planes</a>
+                </div>
+                <div class="servicio-card">
+                    <i class="fas fa-cubes"></i>
+                    <h3>Servidores de Minecraft</h3>
+                    <p>Crea tu propio universo Minecraft con nuestros potentes servidores. Panel de control intuitivo, instalación de mods con un clic y protección anti-griefing.</p>
+                    <a href="#precios" class="btn">Ver Planes</a>
+                </div>
+                <div class="servicio-card">
+                    <i class="fas fa-globe"></i>
+                    <h3>Hosting Web</h3>
+                    <p>Lanza tu sitio web con nuestro hosting rápido y confiable. Incluye certificados SSL gratuitos, bases de datos MySQL y soporte para PHP, Node.js y más.</p>
+                    <a href="#precios" class="btn">Ver Planes</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Estadísticas Section -->
+        <section id="estadisticas">
+            <h2 class="section-title">Nuestros Números</h2>
+            <p class="section-subtitle">Estadísticas que hablan por sí solas</p>
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-number" data-count="5000">0</div>
+                    <div class="stat-text">Clientes Satisfechos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="10000">0</div>
+                    <div class="stat-text">Servidores Activos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="99.9">0</div>
+                    <div class="stat-text">% de Tiempo Activo</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="24">0</div>
+                    <div class="stat-text">Horas de Soporte</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Precios Section -->
+        <section id="precios">
+            <h2 class="section-title">Planes y Precios</h2>
+            <p class="section-subtitle">Soluciones para cada necesidad y presupuesto</p>
+            <div class="precios-tabs">
+                <button class="precio-tab active" data-category="discord">Discord</button>
+                <button class="precio-tab" data-category="minecraft">Minecraft</button>
+                <button class="precio-tab" data-category="web">Web</button>
+            </div>
+            <div class="precios-grid" id="discord-planes">
+                <div class="plan-card" data-plan="discord-basico">
+                    <h3>Discord Básico</h3>
+                    <p class="precio">$5<span>/mes</span></p>
+                    <ul>
+                        <li>Soporte para 1 bot</li>
+                        <li>500 MB de RAM</li>
+                        <li>99.9% de tiempo activo</li>
+                        <li>Soporte 24/7</li>
+                        <li>Panel de control</li>
+                    </ul>
+                    <button class="btn agregar-carrito">Agregar al Carrito</button>
+                </div>
+                <div class="plan-card popular" data-plan="discord-estandar">
+                    <h3>Discord Estándar</h3>
+                    <p class="precio">$10<span>/mes</span></p>
+                    <ul>
+                        <li>Soporte para 3 bots</li>
+                        <li>1 GB de RAM</li>
+                        <li>99.9% de tiempo activo</li>
+                        <li>Soporte prioritario</li>
+                        <li>Panel de control avanzado</li>
+                        <li>Copias de seguridad diarias</li>
+                    </ul>
+                    <button class="btn agregar-carrito">Agregar al Carrito</button>
+                </div>
+                <div class="plan-card" data-plan="discord-premium">
+                    <h3>Discord Premium</h3>
+                    <p class="precio">$20<span>/mes</span></p>
+                    <ul>
+                        <li>Soporte para 10 bots</li>
+                        <li>2 GB de RAM</li>
+                        <li>99.9% de tiempo activo</li>
+                        <li>Soporte VIP</li>
+                        <li>Panel de control avanzado</li>
+                        <li>Copias de seguridad diarias</li>
+                        <li>Dominio personalizado</li>
+                        <li>Escalado automático</li>
+                    </ul>
+                    <button class="btn agregar-carrito">Agregar al Carrito</button>
+                </div>
+            </div>
+            <div class="precios-grid" id="minecraft-planes" style="display: none;">
+                <div class="plan-card" data-plan="minecraft-basico">
+                    <h3>Minecraft Básico</h3>
+                    <p class="precio">$10<span>/mes</span></p>
+                    <ul>
+                        <li>2 GB de RAM</li>
+                        <li>20 GB de almacenamiento SSD</li>
+                        <li>Hasta 10 jugadores</li>
+                        <li>Panel de control</li>
+                        <li>Protección DDoS</li>
+                    </ul>
+                    <button class="btn agregar-carrito">Agregar al Carrito</button>
+                </div>
+                <div class="plan-card popular" data-plan="minecraft-estandar">
+                    <h3>Minecraft Estándar</h3>
+                    <p class="precio">$15<span>/mes</span></p>
+                    <ul>
+                        <li>4 GB de RAM</li>
+                        <li>50 GB de almacenamiento SSD</li>
+                        <li>Hasta 20 jugadores</li>
+                        <li>Panel de control fácil de usar</li>
+                        <li>Protección DDoS avanzada</li>
+                        <li>Instalación de mods con un clic</li>
+                        <li>Copias de seguridad diarias</li>
+                    </ul>
+                    <button class="btn agregar-carrito">Agregar al Carrito</button>
+                </div>
+                <div class="plan-card" data-plan="minecraft-premium">
+                    <h3>Minecraft Premium</h3>
+                    <p class="precio">$25<span>/mes</span></p>
+                    <ul>
+                        <li>8 GB de RAM</li>
+                        <li>100 GB de almacenamiento SSD</li>
+                        <li>Jugadores ilimitados</li>
+                        <li>Panel de control avanzado</li>
+                        <li>Protección DDoS empresarial</li>
+                        <li>Instalación de mods con un clic</li>
+                        <li>Copias de seguridad diarias</li>
+                        <li>Dominio personalizado</li>
+                        <li>Soporte prioritario</li>
+                    </ul>
+                    <button class="btn agregar-carrito">Agregar al Carrito</button>
+                </div>
+            </div>
+            <div class="precios-grid" id="web-planes" style="display: none;">
+                <div class="plan-card" data-plan="web-basico">
+                    <h3>Web Básico</h3>
+                    <p class="precio">$5<span>/mes</span></p>
+                    <ul>
+                        <li>5 GB de almacenamiento SSD</li>
+                        <li>50 GB de transferencia</li>
+                        <li>1 sitio web</li>
+                        <li>5 cuentas de correo</li>
+                        <li>SSL gratuito</li>
+                        <li>Panel de control cPanel</li>
+                    </ul>
+                    <button class="btn agregar-carrito">Agregar al Carrito</button>
+                </div>
+                <div class="plan-card popular" data-plan="web-pro">
+                    <h3>Web Pro</h3>
+                    <p class="precio">$10<span>/mes</span></p>
+                    <ul>
+                        <li>10 GB de almacenamiento SSD</li>
+                        <li>100 GB de transferencia</li>
+                        <li>5 sitios web</li>
+                        <li>10 cuentas de correo</li>
+                        <li>Dominio gratuito</li>
+                        <li>SSL ilimitado</li>
+                        <li>Panel de control cPanel</li>
+                        <li>Soporte técnico prioritario</li>
+                    </ul>
+                    <button class="btn agregar-carrito">Agregar al Carrito</button>
+                </div>
+                <div class="plan-card" data-plan="web-empresarial">
+                    <h3>Web Empresarial</h3>
+                    <p class="precio">$20<span>/mes</span></p>
+                    <ul>
+                        <li>30 GB de almacenamiento SSD</li>
+                        <li>Transferencia ilimitada</li>
+                        <li>Sitios web ilimitados</li>
+                        <li>Cuentas de correo ilimitadas</li>
+                        <li>Dominio gratuito</li>
+                        <li>SSL ilimitado</li>
+                        <li>Panel de control cPanel</li>
+                        <li>Soporte técnico VIP</li>
+                        <li>Copias de seguridad diarias</li>
+                        <li>CDN incluido</li>
+                    </ul>
+                    <button class="btn agregar-carrito">Agregar al Carrito</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonios Section -->
+        <section id="testimonios">
+            <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+            <p class="section-subtitle">Experiencias reales de usuarios satisfechos</p>
+            <div class="testimonios-container">
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="testimonio-card">
+                                <div class="testimonio-text">
+                                    "GalaxyHost ha sido fundamental para mantener mi bot de Discord en línea 24/7. El rendimiento es excelente y el soporte técnico siempre está disponible cuando lo necesito."
+                                </div>
+                                <div class="testimonio-autor">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Carlos Rodríguez" class="testimonio-avatar">
+                                    <div class="testimonio-info">
+                                        <h4>Carlos Rodríguez</h4>
+                                        <p>Desarrollador de Bots</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="testimonio-card">
+                                <div class="testimonio-text">
+                                    "Desde que migré mi servidor de Minecraft a GalaxyHost, la experiencia de juego ha mejorado notablemente. Sin lag y con un panel de control muy intuitivo. ¡Totalmente recomendado!"
+                                </div>
+                                <div class="testimonio-autor">
+                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Laura Martínez" class="testimonio-avatar">
+                                    <div class="testimonio-info">
+                                        <h4>Laura Martínez</h4>
+                                        <p>Administradora de Servidor Minecraft</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="testimonio-card">
+                                <div class="testimonio-text">
+                                    "Mi sitio web nunca había cargado tan rápido. El soporte técnico es excepcional y siempre están dispuestos a ayudar. GalaxyHost ha superado todas mis expectativas."
+                                </div>
+                                <div class="testimonio-autor">
+                                    <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Miguel Ángel López" class="testimonio-avatar">
+                                    <div class="testimonio-info">
+                                        <h4>Miguel Ángel López</h4>
+                                        <p>Propietario de Tienda Online</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq">
+            <h2 class="section-title">Preguntas Frecuentes</h2>
+            <p class="section-subtitle">Respuestas a tus dudas más comunes</p>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        ¿Cómo funciona el proceso de compra?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        El proceso es muy sencillo. Selecciona el plan que mejor se adapte a tus necesidades, agrégalo al carrito y completa el proceso de pago. Una vez confirmado, recibirás un correo electrónico con los detalles de acceso a tu servicio, que estará disponible de inmediato.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        ¿Ofrecen garantía de devolución?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Sí, ofrecemos una garantía de devolución de 7 días. Si no estás satisfecho con nuestro servicio durante la primera semana, te reembolsaremos el 100% de tu pago sin hacer preguntas.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        ¿Puedo cambiar de plan en cualquier momento?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Absolutamente. Puedes actualizar o cambiar tu plan en cualquier momento desde tu panel de control. Si actualizas a un plan superior, solo pagarás la diferencia. Si cambias a un plan inferior, se aplicará el nuevo precio en tu próxima factura.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        ¿Cómo es el soporte técnico?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Ofrecemos soporte técnico 24/7 a través de chat en vivo, tickets de soporte y correo electrónico. Nuestro equipo está formado por expertos en hosting que pueden ayudarte con cualquier problema o duda que tengas.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        ¿Realizan copias de seguridad de mis datos?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Sí, realizamos copias de seguridad diarias de todos nuestros servidores. Además, en los planes Estándar y Premium, puedes realizar copias de seguridad manuales en cualquier momento desde tu panel de control.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contacto Section -->
+        <section id="contacto">
+            <h2 class="section-title">Contáctanos</h2>
+            <p class="section-subtitle">Estamos aquí para ayudarte</p>
+            <div class="contacto-container">
+                <div class="contacto-info">
+                    <div class="contacto-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="contacto-item-content">
+                            <h3>Ubicación</h3>
+                            <p>Calle Tecnología 123, Ciudad Digital</p>
+                        </div>
+                    </div>
+                    <div class="contacto-item">
+                        <i class="fas fa-phone"></i>
+                        <div class="contacto-item-content">
+                            <h3>Teléfono</h3>
+                            <p>+34 912 345 678</p>
+                        </div>
+                    </div>
+                    <div class="contacto-item">
+                        <i class="fas fa-envelope"></i>
+                        <div class="contacto-item-content">
+                            <h3>Email</h3>
+                            <p>info@galaxyhost.com</p>
+                        </div>
+                    </div>
+                    <div class="contacto-item">
+                        <i class="fas fa-clock"></i>
+                        <div class="contacto-item-content">
+                            <h3>Horario de Atención</h3>
+                            <p>24/7, todos los días del año</p>
+                        </div>
+                    </div>
+                </div>
+                <form id="contacto-form">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Tu email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="asunto">Asunto</label>
+                        <input type="text" id="asunto" name="asunto" placeholder="Asunto del mensaje" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mensaje">Mensaje</label>
+                        <textarea id="mensaje" name="mensaje" placeholder="Tu mensaje" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Enviar Mensaje</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>GalaxyHost</h3>
+                <p>Tu proveedor de hosting de confianza para Discord, Minecraft y páginas web. Ofrecemos soluciones de alta calidad con soporte 24/7.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Enlaces Rápidos</h3>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#precios">Precios</a></li>
+                    <li><a href="#testimonios">Testimonios</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Servicios</h3>
+                <ul>
+                    <li><a href="#precios">Hosting para Discord</a></li>
+                    <li><a href="#precios">Servidores de Minecraft</a></li>
+                    <li><a href="#precios">Hosting Web</a></li>
+                    <li><a href="#">Dominios</a></li>
+                    <li><a href="#">SSL</a></li>
+                    <li><a href="#">VPS</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Boletín Informativo</h3>
+                <p>Suscríbete para recibir noticias, ofertas y consejos sobre hosting.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Tu email" required>
+                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 GalaxyHost. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Modales -->
+    <div id="carrito-modal" class="modal">
+        <div class="modal-content">
+            <span class="cerrar" id="cerrar-carrito">&times;</span>
+            <h2>Tu Carrito</h2>
+            <div id="carrito-items"></div>
+            <div id="carrito-total">Total: $0</div>
+            <button id="comprar-btn" class="btn">Realizar Compra</button>
+        </div>
+    </div>
+
+    <div id="usuario-modal" class="modal">
+        <div class="modal-content">
+            <span class="cerrar" id="cerrar-usuario">&times;</span>
+            <h2>Mi Cuenta</h2>
+            <div id="login-form">
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Contraseña" required>
+                <button id="login-btn" class="btn">Iniciar Sesión</button>
+                <div class="auth-options">
+                    <span class="auth-link" id="mostrar-registro">Crear cuenta</span>
+                    <span class="auth-link">¿Olvidaste tu contraseña?</span>
+                </div>
+            </div>
+            <div id="registro-form" style="display: none;">
+                <input type="text" id="registro-nombre" placeholder="Nombre completo" required>
+                <input type="email" id="registro-email" placeholder="Email" required>
+                <input type="password" id="registro-password" placeholder="Contraseña" required>
+                <input type="password" id="registro-password-confirm" placeholder="Confirmar contraseña" required>
+                <button id="registro-btn" class="btn">Registrarse</button>
+                <div class="auth-options">
+                    <span class="auth-link" id="mostrar-login">Ya tengo cuenta</span>
+                </div>
+            </div>
+            <div id="usuario-info" style="display: none;">
+                <h3>Bienvenido, <span id="usuario-nombre"></span></h3>
+                <p>Email: <span id="usuario-email"></span></p>
+                <h4>Tus Servicios:</h4>
+                <ul id="usuario-servicios"></ul>
+                <button id="logout-btn" class="btn">Cerrar Sesión</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Widget -->
+    <div class="chat-widget">
+        <div class="chat-button" id="chat-button">
+            <i class="fas fa-comments"></i>
+        </div>
+        <div class="chat-container" id="chat-container">
+            <div class="chat-header">
+                <h3>Soporte en Línea</h3>
+                <button class="chat-close" id="chat-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message received">
+                    <div class="message-content">
+                        ¡Hola! Soy el asistente virtual de GalaxyHost. ¿En qué puedo ayudarte hoy?
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chat-input-text" placeholder="Escribe tu mensaje...">
+                <button id="chat-send">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-top" id="scroll-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variables
+            const body = document.body;
+            const header = document.getElementById('header');
+            const themeToggle = document.getElementById('theme-toggle');
+            const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+            const hamburgerBtn = document.getElementById('hamburger-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuClose = document.getElementById('mobile-menu-close');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+            const carritoBtn = document.getElementById('carrito-btn');
+            const mobileCarritoBtn = document.getElementById('mobile-carrito-btn');
+            const usuarioBtn = document.getElementById('usuario-btn');
+            const mobileUsuarioBtn = document.getElementById('mobile-usuario-btn');
+            const carritoModal = document.getElementById('carrito-modal');
+            const usuarioModal = document.getElementById('usuario-modal');
+            const cerrarCarrito = document.getElementById('cerrar-carrito');
+            const cerrarUsuario = document.getElementById('cerrar-usuario');
+            const agregarCarritoBtns = document.querySelectorAll('.agregar-carrito');
+            const carritoItems = document.getElementById('carrito-items');
+            const carritoTotal = document.getElementById('carrito-total');
+            const comprarBtn = document.getElementById('comprar-btn');
+            const loginForm = document.getElementById('login-form');
+            const registroForm = document.getElementById('registro-form');
+            const mostrarRegistro = document.getElementById('mostrar-registro');
+            const mostrarLogin = document.getElementById('mostrar-login');
+            const usuarioInfo = document.getElementById('usuario-info');
+            const loginBtn = document.getElementById('login-btn');
+            const registroBtn = document.getElementById('registro-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const usuarioNombre = document.getElementById('usuario-nombre');
+            const usuarioEmail = document.getElementById('usuario-email');
+            const usuarioServicios = document.getElementById('usuario-servicios');
+            const contactoForm = document.getElementById('contacto-form');
+            const precioTabs = document.querySelectorAll('.precio-tab');
+            const preciosGrids = document.querySelectorAll('.precios-grid');
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            const faqAnswers = document.querySelectorAll('.faq-answer');
+            const chatButton = document.getElementById('chat-button');
+            const chatContainer = document.getElementById('chat-container');
+            const chatClose = document.getElementById('chat-close');
+            const chatMessages = document.getElementById('chat-messages');
+            const chatInputText = document.getElementById('chat-input-text');
+            const chatSend = document.getElementById('chat-send');
+            const scrollTop = document.getElementById('scroll-top');
+            const loaderContainer = document.querySelector('.loader-container');
+            const statNumbers = document.querySelectorAll('.stat-number');
+
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            let isDarkMode = localStorage.getItem('darkMode') !== 'false';
+
+            // Inicializar Swiper
+            const swiper = new Swiper('.swiper', {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 1,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                    },
+                },
+                autoplay: {
+                    delay: 5000,
+                },
+            });
+
+            // Funciones
+            function toggleDarkMode() {
+                body.classList.toggle('light-mode');
+                isDarkMode = !body.classList.contains('light-mode');
+                localStorage.setItem('darkMode', isDarkMode);
+                
+                const themeIcon = themeToggle.querySelector('i');
+                const mobileThemeIcon = mobileThemeToggle.querySelector('i');
+                
+                if (isDarkMode) {
+                    themeIcon.className = 'fas fa-sun';
+                    mobileThemeIcon.className = 'fas fa-sun';
+                    mobileThemeToggle.innerHTML = '<i class="fas fa-sun"></i> Modo Claro';
+                } else {
+                    themeIcon.className = 'fas fa-moon';
+                    mobileThemeIcon.className = 'fas fa-moon';
+                    mobileThemeToggle.innerHTML = '<i class="fas fa-moon"></i> Modo Oscuro';
+                }
+            }
+
+            function toggleMobileMenu() {
+                mobileMenu.classList.toggle('active');
+                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+            }
+
+            function actualizarCarritoUI() {
+                carritoItems.innerHTML = '';
+                let total = 0;
+                
+                if (carrito.length === 0) {
+                    carritoItems.innerHTML = '<p>Tu carrito está vacío</p>';
+                } else {
+                    carrito.forEach((item, index) => {
+                        const itemElement = document.createElement('div');
+                        itemElement.classList.add('carrito-item');
+                        itemElement.innerHTML = `
+                            <div class="carrito-item-info">
+                                <div class="carrito-item-nombre">${item.nombre}</div>
+                                <div class="carrito-item-precio">$${item.precio}/mes</div>
+                            </div>
+                            <button class="eliminar-item" data-index="${index}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        `;
+                        carritoItems.appendChild(itemElement);
+                        total += item.precio;
+                    });
+                }
+                
+                carritoTotal.textContent = `Total: $${total}/mes`;
+                document.getElementById('carrito-count').textContent = carrito.length;
+                document.getElementById('mobile-carrito-count').textContent = carrito.length;
+                localStorage.setItem('carrito', JSON.stringify(carrito));
+            }
+
+            function agregarAlCarrito(nombre, precio) {
+                carrito.push({ nombre, precio });
+                actualizarCarritoUI();
+                mostrarToast('Producto agregado al carrito', 'success');
+            }
+
+            function eliminarDelCarrito(index) {
+                carrito.splice(index, 1);
+                actualizarCarritoUI();
+                mostrarToast('Producto eliminado del carrito', 'info');
+            }
+
+            function abrirModal(modal) {
+                modal.style.display = 'block';
+                setTimeout(() => {
+                    modal.classList.add('active');
+                }, 10);
+                document.body.style.overflow = 'hidden';
+            }
+
+            function cerrarModal(modal) {
+                modal.classList.remove('active');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+
+            function simularInicioSesion(email, password) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        if (email === 'usuario@ejemplo.com' && password === 'password') {
+                            resolve({
+                                nombre: 'Usuario Ejemplo',
+                                email: 'usuario@ejemplo.com',
+                                servicios: ['Discord Básico', 'Web Pro']
+                            });
+                        } else {
+                            reject(new Error('Credenciales incorrectas'));
+                        }
+                    }, 1000);
+                });
+            }
+
+            function simularRegistro(nombre, email, password, passwordConfirm) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        if (password !== passwordConfirm) {
+                            reject(new Error('Las contraseñas no coinciden'));
+                            return;
+                        }
+                        
+                        if (email === 'usuario@ejemplo.com') {
+                            reject(new Error('Este email ya está registrado'));
+                            return;
+                        }
+                        
+                        resolve({
+                            nombre: nombre,
+                            email: email,
+                            servicios: []
+                        });
+                    }, 1000);
+                });
+            }
+
+            function mostrarToast(mensaje, tipo = 'info') {
+                const toast = document.createElement('div');
+                toast.classList.add('toast', tipo);
+                toast.innerHTML = `
+                    <div>${mensaje}</div>
+                    <button class="toast-close"><i class="fas fa-times"></i></button>
+                `;
+                
+                document.getElementById('toast-container').appendChild(toast);
+                
+                const closeBtn = toast.querySelector('.toast-close');
+                closeBtn.addEventListener('click', () => {
+                    toast.remove();
+                });
+                
+                setTimeout(() => {
+                    toast.classList.add('removing');
+                    toast.style.opacity = '0';
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 300);
+                }, 5000);
+            }
+
+            function cambiarCategoriaPrecio(categoria) {
+                precioTabs.forEach(tab => {
+                    tab.classList.remove('active');
+                    if (tab.getAttribute('data-category') === categoria) {
+                        tab.classList.add('active');
+                    }
+                });
+                
+                preciosGrids.forEach(grid => {
+                    grid.style.display = 'none';
+                    if (grid.id === `${categoria}-planes`) {
+                        grid.style.display = 'grid';
+                    }
+                });
+            }
+
+            function toggleFaqAnswer(index) {
+                faqQuestions[index].classList.toggle('active');
+                faqAnswers[index].classList.toggle('active');
+            }
+
+            function enviarMensajeChat(mensaje) {
+                if (!mensaje.trim()) return;
+                
+                // Agregar mensaje del usuario
+                const userMessage = document.createElement('div');
+                userMessage.classList.add('message', 'sent');
+                userMessage.innerHTML = `
+                    <div class="message-content">${mensaje}</div>
+                `;
+                chatMessages.appendChild(userMessage);
+                
+                // Simular respuesta del bot
+                setTimeout(() => {
+                    const botMessage = document.createElement('div');
+                    botMessage.classList.add('message', 'received');
+                    
+                    let respuesta;
+                    if (mensaje.toLowerCase().includes('precio') || mensaje.toLowerCase().includes('plan')) {
+                        respuesta = 'Tenemos planes desde $5/mes. Puedes ver todos nuestros precios en la sección de Precios de nuestra web.';
+                    } else if (mensaje.toLowerCase().includes('soporte') || mensaje.toLowerCase().includes('ayuda')) {
+                        respuesta = 'Nuestro equipo de soporte está disponible 24/7. Puedes contactarnos por chat, email o teléfono.';
+                    } else if (mensaje.toLowerCase().includes('discord')) {
+                        respuesta = 'Nuestro hosting para Discord mantiene tu bot en línea 24/7 con alta disponibilidad y rendimiento.';
+                    } else if (mensaje.toLowerCase().includes('minecraft')) {
+                        respuesta = 'Nuestros servidores de Minecraft ofrecen protección DDoS, panel de control intuitivo y soporte para mods.';
+                    } else {
+                        respuesta = 'Gracias por contactar con GalaxyHost. ¿En qué más puedo ayudarte?';
+                    }
+                    
+                    botMessage.innerHTML = `
+                        <div class="message-content">${respuesta}</div>
+                    `;
+                    chatMessages.appendChild(botMessage);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000);
+                
+                chatInputText.value = '';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function animateStats() {
+                statNumbers.forEach(stat => {
+                    const target = parseFloat(stat.getAttribute('data-count'));
+                    const duration = 2000; // ms
+                    const step = target / (duration / 16); // 60fps
+                    let current = 0;
+                    
+                    const animate = () => {
+                        current += step;
+                        if (current < target) {
+                            stat.textContent = Number.isInteger(target) ? Math.floor(current) : current.toFixed(1);
+                            requestAnimationFrame(animate);
+                        } else {
+                            stat.textContent = Number.isInteger(target) ? target : target.toFixed(1);
+                        }
+                    };
+                    
+                    animate();
+                });
+            }
+
+            // Event Listeners
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    loaderContainer.style.opacity = '0';
+                    setTimeout(() => {
+                        loaderContainer.style.display = 'none';
+                    }, 500);
+                }, 1000);
+                
+                // Inicializar modo oscuro/claro
+                if (!isDarkMode) {
+                    body.classList.add('light-mode');
+                    themeToggle.querySelector('i').className = 'fas fa-moon';
+                    mobileThemeToggle.innerHTML = '<i class="fas fa-moon"></i> Modo Oscuro';
+                } else {
+                    themeToggle.querySelector('i').className = 'fas fa-sun';
+                    mobileThemeToggle.innerHTML = '<i class="fas fa-sun"></i> Modo Claro';
+                }
+            });
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    header.classList.add('scrolled');
+                    scrollTop.classList.add('active');
+                } else {
+                    header.classList.remove('scrolled');
+                    scrollTop.classList.remove('active');
+                }
+                
+                // Animar estadísticas cuando sean visibles
+                const statsSection = document.getElementById('estadisticas');
+                if (statsSection.getBoundingClientRect().top < window.innerHeight * 0.75 && 
+                    statsSection.getBoundingClientRect().bottom > 0) {
+                    if (!statsSection.classList.contains('animated')) {
+                        statsSection.classList.add('animated');
+                        animateStats();
+                    }
+                }
+            });
+
+            themeToggle.addEventListener('click', toggleDarkMode);
+            mobileThemeToggle.addEventListener('click', toggleDarkMode);
+            
+            hamburgerBtn.addEventListener('click', toggleMobileMenu);
+            mobileMenuClose.addEventListener('click', toggleMobileMenu);
+            
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    toggleMobileMenu();
+                });
+            });
+
+            carritoBtn.addEventListener('click', () => abrirModal(carritoModal));
+            mobileCarritoBtn.addEventListener('click', () => {
+                toggleMobileMenu();
+                abrirModal(carritoModal);
+            });
+            
+            usuarioBtn.addEventListener('click', () => abrirModal(usuarioModal));
+            mobileUsuarioBtn.addEventListener('click', () => {
+                toggleMobileMenu();
+                abrirModal(usuarioModal);
+            });
+
+            cerrarCarrito.addEventListener('click', () => cerrarModal(carritoModal));
+            cerrarUsuario.addEventListener('click', () => cerrarModal(usuarioModal));
+
+            window.addEventListener('click', (e) => {
+                if (e.target === carritoModal) {
+                    cerrarModal(carritoModal);
+                }
+                if (e.target === usuarioModal) {
+                    cerrarModal(usuarioModal);
+                }
+            });
+
+            agregarCarritoBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const plan = e.target.closest('.plan-card');
+                    const nombre = plan.querySelector('h3').textContent;
+                    const precio = parseFloat(plan.querySelector('.precio').textContent.replace('$', ''));
+                    agregarAlCarrito(nombre, precio);
+                });
+            });
+
+            carritoItems.addEventListener('click', (e) => {
+                if (e.target.classList.contains('eliminar-item') || e.target.parentElement.classList.contains('eliminar-item')) {
+                    const index = e.target.closest('.eliminar-item').getAttribute('data-index');
+                    eliminarDelCarrito(index);
+                }
+            });
+
+            comprarBtn.addEventListener('click', () => {
+                if (carrito.length === 0) {
+                    mostrarToast('Tu carrito está vacío', 'warning');
+                } else {
+                    mostrarToast('¡Gracias por tu compra!', 'success');
+                    carrito = [];
+                    actualizarCarritoUI();
+                    cerrarModal(carritoModal);
+                }
+            });
+
+            mostrarRegistro.addEventListener('click', () => {
+                loginForm.style.display = 'none';
